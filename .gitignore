@@ -1,0 +1,7 @@
+# Secrets and local state: never commit these.
+stack.env
+*.log
+downloads/
+
+# Upstream SupoClip is cloned here by setup.sh at a pinned commit.
+supoclip/

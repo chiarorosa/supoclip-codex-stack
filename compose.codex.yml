@@ -1,0 +1,23 @@
+# Overlay for supoclip/docker-compose.yml (used with `-f` twice, see dc.sh).
+# It only ADDS the LLM gateway; every other SupoClip service is untouched and
+# picks up LLM / OLLAMA_BASE_URL / TRANSCRIPTION_PROVIDER from stack.env.
+services:
+  codex-proxy:
+    build:
+      context: ../codex-proxy        # relative to the project directory (supoclip/)
+    container_name: codex-proxy
+    restart: unless-stopped
+    volumes:
+      - codex_auth:/data/codex       # the ChatGPT login lives only here
+    # Deliberately NO `ports:` - the gateway has no authentication of its own,
+    # so it must only be reachable by containers on supoclip-network.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:10531/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  codex_auth:
+    driver: local
