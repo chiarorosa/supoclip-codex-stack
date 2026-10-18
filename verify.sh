@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # End-to-end check of the running stack. Prints PASS/FAIL per check and exits non-zero on any FAIL.
 # The last check makes a few real LLM calls, which count toward your ChatGPT plan usage.
+# shellcheck disable=SC2317  # the check functions below are called indirectly through check()
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
 fail=0
 check() { # check <name> <command...>
