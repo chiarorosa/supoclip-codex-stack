@@ -35,4 +35,4 @@ Goal: install and verify this stack on the user's machine. Follow the steps in o
 - Containers not healthy: `./dc.sh logs <service>` for `backend`, `worker`, `codex-proxy`.
 - `codex login` TLS error: rebuild with `./dc.sh build codex-proxy`.
 - HTTP 429 from the gateway: the user's plan limit was reached; wait and retry.
-- "Open in editor" failing for a YouTube source is a known upstream limitation (see README), not an installation problem.
+- "Open in editor" failing for a YouTube source is a known upstream limitation (SupoClip issue #205), not an installation problem.

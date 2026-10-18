@@ -75,12 +75,35 @@ After editing `stack.env`, recreate the services: `./dc.sh up -d`.
 - **Local only.** The stack is meant for a personal machine. Generated secrets protect the local database and backend, not an internet-facing deployment.
 - **SupoClip licence.** SupoClip is AGPL-3.0 and is not redistributed here; `setup.sh` clones it from its own repository. The files in this repo are under the MIT licence.
 
-## Troubleshooting
+## Contributing
 
-- **Progress sits at 30% for minutes.** Whisper on CPU gives no progress output while it works. Check `docker stats supoclip-worker`: high CPU means it is working. See upstream [issue #67](https://github.com/FujiwaraChoki/supoclip/issues/67).
-- **"Open in editor" fails for YouTube sources.** SupoClip deletes the downloaded video after a task and the editor downloads it again; YouTube can answer with a bot check. Uploads are not affected. See upstream [issue #205](https://github.com/FujiwaraChoki/supoclip/issues/205).
-- **Login fails with `error sending request for url (https://auth.openai.com/...)`.** The Codex CLI needs system CA certificates; the `codex-proxy` image installs them, so rebuild it with `./dc.sh build codex-proxy`.
-- **`variable is not set` warnings** for Stripe, AWS, etc. are expected: those features are disabled in self-host mode.
+Contributions from the community are welcome and encouraged: bug reports, fixes, documentation, and testing on other setups. This project is small on purpose, so the bar is simple: it should stay easy to read, safe by default and verifiable.
+
+**Where help is most useful**
+
+- Testing on **Linux and macOS** (and Windows with WSL2), and reporting what you saw.
+- A **clean-machine install** run of `setup.sh` / `login.sh` / `verify.sh`, including the "login still pending" path (exit code 2).
+- Making the install work better for AI agents: clearer steps in [`AGENTS.md`](AGENTS.md), better checks in `verify.sh`.
+- Support for **other OpenAI-compatible gateways** or newer pinned versions of the gateway, the Codex CLI or SupoClip.
+- README improvements, translations and troubleshooting notes from your own experience.
+
+**How to contribute**
+
+1. Open an [issue](https://github.com/chiarorosa/supoclip-codex-stack/issues) first for anything bigger than a small fix, so we can agree on the approach.
+2. Fork the repo, create a branch and keep the change small and focused (one topic per pull request).
+3. Run `./verify.sh` against a working stack and say in the pull request what you tested and on which OS and Docker version.
+4. Explain the *why* in the description, and update the README or `AGENTS.md` when behaviour changes.
+
+**Ground rules**
+
+- **Never commit secrets**: no `stack.env`, tokens, `auth.json` or logs containing them. If you find a leak, open a private security report instead of a public issue.
+- Keep the gateway **private**: no `ports:` for `codex-proxy`, nothing that exposes it beyond the compose network.
+- Keep external code **pinned** (a commit hash or exact version) and mention what you reviewed when you bump one.
+- Do not patch SupoClip from this repo. Bugs and features in SupoClip itself belong in [its repository](https://github.com/FujiwaraChoki/supoclip); link them here if they affect the stack.
+- Scripts stay plain **bash** and idempotent, with LF line endings.
+- Be kind and constructive. Maintainers may close issues or pull requests that are off-topic, unsafe or abusive.
+
+By contributing, you agree that your contribution is licensed under the MIT licence of this repository.
 
 ## Tested with
 
